@@ -21,6 +21,9 @@ in
   fileSystems."/boot".fsType = "vfat";
   image.repart = {
     name = "image";
+    compression = {
+      enable = true;
+    };
     partitions = {
       "10-uboot-padding" = {
         repartConfig = {

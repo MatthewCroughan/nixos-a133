@@ -9,9 +9,8 @@
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         packages.x = pkgs.callPackage ./uboot.nix {};
         packages.a133-image = self.nixosConfigurations.a133.config.system.build.image.overrideAttrs {
-          postFixup = ''
-            dd if=${pkgs.callPackage ./uboot.nix {}}/u-boot-sunxi-with-spl.bin of=$out/image.raw bs=8k seek=1 conv=notrunc
-            ${pkgs.zstd}/bin/zstd --compress --rm $out/image.raw
+          preInstall = ''
+            dd if=${pkgs.callPackage ./uboot.nix {}}/u-boot-sunxi-with-spl.bin of=${self.nixosConfigurations.a133.config.image.repart.imageFileBasename}.raw bs=128k seek=1 conv=notrunc
           '';
         };
       };
